@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        'vita-link': '#058789', 
-        'vita-link-dark': '#4a4a4a',
+        'credi-check': '#399b53', 
+        'credi-check-dark': '#4a4a4a',
       },
     },
   },

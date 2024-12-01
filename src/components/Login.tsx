@@ -12,7 +12,7 @@ export default function Login() {
 
     try {
       // Enviar las credenciales al backend
-      const response = await fetch("/api/login", {
+      const response = await fetch("http://localhost:3001/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,11 +38,11 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-vita-link">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-credi-check">
       <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-md">
         <img
-          src="vitalink_logo.png"
-          alt="Vitalink Logo"
+          src="https://vitalink.nyc3.cdn.digitaloceanspaces.com/CrediChek_logoCompleto.png"
+          alt="CrediCheck Logo"
           className="w-32 mx-auto mb-6"
         />
         <form className="space-y-5" onSubmit={handleSubmit}>
@@ -86,14 +86,14 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full py-4 px-4 bg-vita-link text-white font-semibold rounded-lg shadow hover:bg-vita-link-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            className="w-full py-4 px-4 bg-credi-check text-white font-semibold rounded-lg shadow hover:bg-credi-check-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
           >
             Ingresar
           </button>
 
           <a
             href="/register"
-            className="block text-center text-sm text-vita-link hover:text-vita-link-dark"
+            className="block text-center text-sm text-credi-check hover:text-credi-check-dark"
           >
             Registrarse
           </a>
