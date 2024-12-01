@@ -9,7 +9,7 @@ export default function Footer() {
 
   // Clases dinámicas basadas en el tema
   const footerClasses = theme === 'dark' ? 'bg-[#152C2C] text-white' : 'bg-white text-black';
-  const linkClasses = theme === 'dark' ? 'hover:text-vita-link hover:underline underline-offset-4 decoration-vita-link' : 'hover:text-vita-link hover:underline underline-offset-4 decoration-vita-link';
+  const linkClasses = theme === 'dark' ? 'hover:text-credi-check hover:underline underline-offset-4 decoration-vita-link' : 'hover:text-credi-check hover:underline underline-offset-4 decoration-vita-link';
 
   return (
     <footer className={`${footerClasses} border-t border-gray-300 pt-10 transition-colors duration-300`}>
@@ -17,7 +17,7 @@ export default function Footer() {
         <div className="grid grid-cols-5 gap-6">
           <div>
             <div className="mb-10">
-              <img src="vitalink_logo.png" alt="Vitalink Logo" className="w-28" />
+              <img src="https://vitalink.nyc3.cdn.digitaloceanspaces.com/CrediChek_dibujo.png" alt="Vitalink Logo" className="w-28" />
             </div>
 
             <div className="flex items-center gap-5 ">

@@ -26,7 +26,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
         {/* Logo */}
         <a href="/home">
-          <img src="vitalink_logo.png" alt="Vitalink Logo" className="w-24" />
+          <img src="https://vitalink.nyc3.cdn.digitaloceanspaces.com/CrediChek_logoCompleto.png" alt="CrediCheck Logo" className="w-24" />
         </a>
 
         {/* Navegación */}
@@ -45,7 +45,7 @@ export default function Header() {
                 xmlns="http://www.w3.org/2000/svg"
                 className={`h-5 w-5 ${
                   menuQuestOpen
-                    ? "text-vita-link rotate-180 duration-300"
+                    ? "text-credi-check rotate-180 duration-300"
                     : "text-gray-500"
                 }`}
                 viewBox="0 0 24 24"
@@ -98,7 +98,7 @@ export default function Header() {
                 xmlns="http://www.w3.org/2000/svg"
                 className={`h-5 w-5 ${
                   menuEspecialidadesOpen
-                    ? "text-vita-link rotate-180 duration-300"
+                    ? "text-credi-check rotate-180 duration-300"
                     : "text-gray-500"
                 }`}
                 viewBox="0 0 24 24"
@@ -150,7 +150,7 @@ export default function Header() {
                 xmlns="http://www.w3.org/2000/svg"
                 className={`h-5 w-5 ${
                   menuModulosOpen
-                    ? "text-vita-link rotate-180 duration-300"
+                    ? "text-credi-check rotate-180 duration-300"
                     : "text-gray-500"
                 }`}
                 viewBox="0 0 24 24"

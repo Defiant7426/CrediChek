@@ -142,7 +142,7 @@ export default function CuestionarioCita() {
   maxDate.setDate(minDate.getDate() + 7);
 
   const formClasses = theme === "dark" ? "bg-[#152C2C] text-white" : "bg-white text-black";
-  const buttonClasses = theme === "dark" ? "bg-vita-link text-white" : "bg-blue-500 text-white";
+  const buttonClasses = theme === "dark" ? "bg-credi-check text-white" : "bg-blue-500 text-white";
 
   // Usamos `useEffect` para manejar el estado del confeti y ajustarlo cuando el tamaño de la ventana cambie
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -194,7 +194,7 @@ export default function CuestionarioCita() {
                     onClick={() => handleSpecialtySelect(specialty as keyof SpecialtyDoctors)}
                     className={`p-2 rounded-lg border ${
                       selectedSpecialty === specialty
-                        ? "bg-vita-link text-white"
+                        ? "bg-credi-check text-white"
                         : "bg-gray-200 hover:bg-gray-300"
                     }`}
                   >
@@ -234,7 +234,7 @@ export default function CuestionarioCita() {
                       onClick={() => handleTimeSelect(time, doctor)}
                       className={`p-2 rounded-lg border ${
                         selectedTime === time
-                          ? "bg-vita-link text-white"
+                          ? "bg-credi-check text-white"
                           : "bg-gray-200 hover:bg-gray-300"
                       }`}
                     >

@@ -8,13 +8,13 @@ export default function Feature() {
                 <h1 className="text-6xl font-semibold leading-tight">Bienvenido, {username}</h1>
                 <p className="my-6 text-lg pb-6">Estamos listos para verte! 😊</p>
                 <div className="flex items-center gap-6">
-                    <a href="/chatcita" className="bg-vita-link py-4 px-6 rounded-full font-semibold text-sm hover:bg-vita-link-dark">
+                    <a href="/chatcita" className="bg-credi-check py-4 px-6 rounded-full font-semibold text-sm hover:bg-credi-check-dark">
                         Reservar cita 
                     </a>
                     
                     <a href="/informacion" className="flex items-center gap-3 font-medium group">
                         <div className="bg-white w-8 p-2 rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" className=" text-vita-link group-hover:text-vita-link-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" className=" text-credi-check group-hover:text-credi-check-dark">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
                         </svg>
 

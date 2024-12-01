@@ -17,6 +17,8 @@ import AsitenciaMedicamentos from './components/AsitenciaMedicamentos';
 import CuestionarioCita from './components/CuestionarioCita';
 import PreguntasFrecuentes from './components/PreguntasFrecuentes';
 import ResumenConsultas from './components/ResumenConsultas';
+import CreditRiskForm from './components/CreditRiskForm';
+import RiskForm from './components/RiskForm';
 
 
 function App() {
@@ -45,6 +47,7 @@ function App() {
         <Route path="/cuestionarCita" element={<CuestionarioCita />} />
         <Route path="/preguntasFrecuentes" element={<PreguntasFrecuentes />} />
         <Route path="/resumenConsultas" element={<ResumenConsultas />} />
+        <Route path="/formulario" element={<RiskForm />} />
 
       </Routes>
     </Router>
