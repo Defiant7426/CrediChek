@@ -53,29 +53,30 @@ export const createTableCitas = async () => {
 export const createTableApplicationData = async () => {
   const dropQuery = 'DROP TABLE IF EXISTS application_data';
   const queryText = `
-    CREATE TABLE IF NOT EXISTS application_data (
-      SK_ID_CURR BIGINT PRIMARY KEY,
-      TARGET INT,
-      NAME_CONTRACT_TYPE VARCHAR(50),
-      CODE_GENDER VARCHAR(10),
-      FLAG_OWN_CAR VARCHAR(10),
-      FLAG_OWN_REALTY VARCHAR(10),
-      CNT_CHILDREN INT,
-      AMT_INCOME_TOTAL FLOAT,
-      AMT_CREDIT FLOAT,
-      AMT_ANNUITY FLOAT,
-      AMT_GOODS_PRICE FLOAT,
-      NAME_TYPE_SUITE VARCHAR(50),
-      NAME_INCOME_TYPE VARCHAR(50),
-      NAME_EDUCATION_TYPE VARCHAR(50),
-      NAME_FAMILY_STATUS VARCHAR(50),
-      NAME_HOUSING_TYPE VARCHAR(50),
-      REGION_POPULATION_RELATIVE FLOAT,
-      DAYS_BIRTH FLOAT,
-      DAYS_EMPLOYED FLOAT,
-      DAYS_REGISTRATION FLOAT
-    );
-  `;
+  CREATE TABLE IF NOT EXISTS application_data (
+    id INT,
+    codigo_genero VARCHAR(10),
+    numero_hijos FLOAT,
+    estado_civil VARCHAR(50),
+    numero_miembros_familia FLOAT,
+    ingreso_total FLOAT,
+    tipo_ingreso VARCHAR(50),
+    nivel_educativo VARCHAR(50),
+    tipo_ocupacion VARCHAR(50),
+    propietario_vehiculo VARCHAR(1),
+    propietario_propiedad VARCHAR(1),
+    tipo_vivienda VARCHAR(50),
+    tipo_contrato VARCHAR(50),
+    monto_credito FLOAT,
+    monto_anualidad FLOAT,
+    precio_bienes FLOAT,
+    fuente_externa_2 FLOAT,
+    fuente_externa_3 FLOAT,
+    objetivo FLOAT,
+    edad FLOAT,
+    anios_empleo FLOAT
+  );
+`;
 
   try {
     await pool.query(dropQuery);
@@ -88,28 +89,48 @@ export const createTableApplicationData = async () => {
 };
 
 export const loadCSVData = async () => {
-  const filePath = './data/application_train.csv';
+  const filePath = './data/data_ultimo.csv'; // application_train
   const queryText = `
-    INSERT INTO application_data (
-      SK_ID_CURR, TARGET, NAME_CONTRACT_TYPE, CODE_GENDER, FLAG_OWN_CAR, FLAG_OWN_REALTY, CNT_CHILDREN, 
-      AMT_INCOME_TOTAL, AMT_CREDIT, AMT_ANNUITY, AMT_GOODS_PRICE, NAME_TYPE_SUITE, NAME_INCOME_TYPE, 
-      NAME_EDUCATION_TYPE, NAME_FAMILY_STATUS, NAME_HOUSING_TYPE, REGION_POPULATION_RELATIVE, 
-      DAYS_BIRTH, DAYS_EMPLOYED, DAYS_REGISTRATION
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
-  `;
+  INSERT INTO application_data (
+    codigo_genero, numero_hijos, estado_civil, numero_miembros_familia,
+    ingreso_total, tipo_ingreso, nivel_educativo, tipo_ocupacion,
+    propietario_vehiculo, propietario_propiedad, tipo_vivienda,
+    tipo_contrato, monto_credito, monto_anualidad, precio_bienes,
+    fuente_externa_2, fuente_externa_3, objetivo, edad, anios_empleo
+  ) VALUES (
+    $1, $2, $3, $4,
+    $5, $6, $7, $8,
+    $9, $10, $11, $12,
+    $13, $14, $15, $16,
+    $17, $18, $19, $20
+  );
+`;
 
   const results = [];
   fs.createReadStream(filePath)
     .pipe(csv())
     .on('data', (data) => {
       const values = [
-        data.SK_ID_CURR || null, data.TARGET || null, data.NAME_CONTRACT_TYPE || null, data.CODE_GENDER || null, 
-        data.FLAG_OWN_CAR || null, data.FLAG_OWN_REALTY || null, data.CNT_CHILDREN || null, 
-        data.AMT_INCOME_TOTAL || null, data.AMT_CREDIT || null, data.AMT_ANNUITY || null, 
-        data.AMT_GOODS_PRICE || null, data.NAME_TYPE_SUITE || null, data.NAME_INCOME_TYPE || null, 
-        data.NAME_EDUCATION_TYPE || null, data.NAME_FAMILY_STATUS || null, data.NAME_HOUSING_TYPE || null, 
-        data.REGION_POPULATION_RELATIVE || null, data.DAYS_BIRTH || null, data.DAYS_EMPLOYED || null, 
-        data.DAYS_REGISTRATION || null
+        data.codigo_genero,
+        data.numero_hijos,
+        data.estado_civil,
+        data.numero_miembros_familia,
+        data.ingreso_total,
+        data.tipo_ingreso,
+        data.nivel_educativo,
+        data.tipo_ocupacion,
+        data.propietario_vehiculo,
+        data.propietario_propiedad,
+        data.tipo_vivienda,
+        data.tipo_contrato,
+        data.monto_credito,
+        data.monto_anualidad,
+        data.precio_bienes,
+        data.fuente_externa_2,
+        data.fuente_externa_3,
+        data.objetivo,
+        data.edad,
+        data.anios_empleo
       ];
       results.push(pool.query(queryText, values));
     })

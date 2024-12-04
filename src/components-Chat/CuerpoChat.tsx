@@ -6,7 +6,7 @@ import { ThemeContext } from "../../ThemeContext";
 export default function CuerpoChat() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState([
-    { sender: 'Asistente IA', text: 'Hola, ¿en qué puedo ayudarte a reservar una cita médica?' }
+    { sender: 'Asistente IA', text: 'Hola, ¿en qué puedo ayudarte a calcular tu score crediticio?' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isListening, setIsListening] = useState(false);
@@ -47,7 +47,179 @@ export default function CuerpoChat() {
     setInputValue('');
 
     try {
-      const response = await axios.post('/api/chat', {
+      const response_detection = await axios.post('http://localhost:3001/api/detect', { message });
+      console.log("Respuesta de detección: ", response_detection.data.response);
+      let gpt_detec_response = response_detection.data.response;
+      //quitamos los acentos que puede haber en la respuesta
+      gpt_detec_response = gpt_detec_response.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      if (gpt_detec_response.toLowerCase().includes('genero')) {
+        const genero = gpt_detec_response.match(/El genero de la persona es (\w+)/);
+        if (genero) {
+          console.log("El genero es: ", genero[1]);
+        }
+      }
+      // Extracción de número de hijos
+      if (gpt_detec_response.toLowerCase().includes('hijo')) {
+        const hijos = gpt_detec_response.match(/El numero de hijos es (\d+)/i);
+        if (hijos) {
+          const numeroHijosValue = parseInt(hijos[1]);
+          console.log("El número de hijos es:", numeroHijosValue);
+        }
+      }
+
+      // Extracción de estado civil
+      if (gpt_detec_response.toLowerCase().includes('estado civil')) {
+        const estadoCivil = gpt_detec_response.match(/El estado civil de la persona es (\w+)/i);
+        if (estadoCivil) {
+          const estadoCivilValue = estadoCivil[1];
+          console.log("El estado civil es:", estadoCivilValue);
+        }
+      }
+
+      // Extracción de número de miembros en la familia
+      if (gpt_detec_response.toLowerCase().includes('familia')) {
+        const miembrosFamilia = gpt_detec_response.match(/El numero de miembros en la familia es (\d+)/i);
+        if (miembrosFamilia) {
+          const numeroMiembrosFamiliaValue = parseInt(miembrosFamilia[1]);
+          console.log("El número de miembros en la familia es:", numeroMiembrosFamiliaValue);
+        }
+      }
+
+      // Extracción de ingreso total
+      if (gpt_detec_response.toLowerCase().includes('ingreso total')) {
+        const ingresoTotal = gpt_detec_response.match(/El ingreso total de la persona es (\d+\.?\d*)/i);
+        if (ingresoTotal) {
+          const ingresoTotalValue = parseFloat(ingresoTotal[1]);
+          console.log("El ingreso total es:", ingresoTotalValue);
+        }
+      }
+
+      // Extracción de tipo de ingreso
+      if (gpt_detec_response.toLowerCase().includes('tipo de ingreso')) {
+        const tipoIngreso = gpt_detec_response.match(/El tipo de ingreso de la persona es (\w+)/i);
+        if (tipoIngreso) {
+          const tipoIngresoValue = tipoIngreso[1];
+          console.log("El tipo de ingreso es:", tipoIngresoValue);
+        }
+      }
+
+      // Extracción de nivel educativo
+      if (gpt_detec_response.toLowerCase().includes('nivel educativo')) {
+        const nivelEducativo = gpt_detec_response.match(/El nivel educativo de la persona es (\w+)/i);
+        if (nivelEducativo) {
+          const nivelEducativoValue = nivelEducativo[1];
+          console.log("El nivel educativo es:", nivelEducativoValue);
+        }
+      }
+
+      // Extracción de tipo de ocupación
+      if (gpt_detec_response.toLowerCase().includes('tipo de ocupacion')) {
+        const tipoOcupacion = gpt_detec_response.match(/El tipo de ocupacion de la persona es (\w+)/i);
+        if (tipoOcupacion) {
+          const tipoOcupacionValue = tipoOcupacion[1];
+          console.log("El tipo de ocupación es:", tipoOcupacionValue);
+        }
+      }
+
+      // Extracción de propiedad de vehículo
+      if (gpt_detec_response.toLowerCase().includes('propietario de vehiculo')) {
+        const propietarioVehiculo = gpt_detec_response.match(/El usuario es propietario de vehiculo (\w+)/i);
+        if (propietarioVehiculo) {
+          const propietarioVehiculoValue = propietarioVehiculo[1];
+          console.log("Propietario de vehículo:", propietarioVehiculoValue);
+        }
+      }
+
+      // Extracción de propiedad de propiedad
+      if (gpt_detec_response.toLowerCase().includes('propietario de propiedad')) {
+        const propietarioPropiedad = gpt_detec_response.match(/El usuario es propietario de propiedad (\w+)/i);
+        if (propietarioPropiedad) {
+          const propietarioPropiedadValue = propietarioPropiedad[1];
+          console.log("Propietario de propiedad:", propietarioPropiedadValue);
+        }
+      }
+
+      // Extracción de tipo de vivienda
+      if (gpt_detec_response.toLowerCase().includes('tipo de vivienda')) {
+        const tipoVivienda = gpt_detec_response.match(/El tipo de vivienda de la persona es (\w+)/i);
+        if (tipoVivienda) {
+          const tipoViviendaValue = tipoVivienda[1];
+          console.log("El tipo de vivienda es:", tipoViviendaValue);
+        }
+      }
+
+      // Extracción de tipo de contrato
+      if (gpt_detec_response.toLowerCase().includes('tipo de contrato')) {
+        const tipoContrato = gpt_detec_response.match(/El tipo de contrato de la persona es (\w+)/i);
+        if (tipoContrato) {
+          const tipoContratoValue = tipoContrato[1];
+          console.log("El tipo de contrato es:", tipoContratoValue);
+        }
+      }
+
+      // Extracción de monto de crédito
+      if (gpt_detec_response.toLowerCase().includes('monto del credito')) {
+        const montoCredito = gpt_detec_response.match(/El monto del credito de la persona es (\d+\.?\d*)/i);
+        if (montoCredito) {
+          const montoCreditoValue = parseFloat(montoCredito[1]);
+          console.log("El monto del crédito es:", montoCreditoValue);
+        }
+      }
+
+      // Extracción de monto de anualidad
+      if (gpt_detec_response.toLowerCase().includes('monto de la anualidad')) {
+        const montoAnualidad = gpt_detec_response.match(/El monto de la anualidad de la persona es (\d+\.?\d*)/i);
+        if (montoAnualidad) {
+          const montoAnualidadValue = parseFloat(montoAnualidad[1]);
+          console.log("El monto de la anualidad es:", montoAnualidadValue);
+        }
+      }
+
+      // Extracción de precio de bienes
+      if (gpt_detec_response.toLowerCase().includes('precio de los bienes')) {
+        const precioBienes = gpt_detec_response.match(/El precio de los bienes de la persona es (\d+\.?\d*)/i);
+        if (precioBienes) {
+          const precioBienesValue = parseFloat(precioBienes[1]);
+          console.log("El precio de los bienes es:", precioBienesValue);
+        }
+      }
+
+      // Extracción de deuda con el banco
+      if (gpt_detec_response.toLowerCase().includes('tiene deuda con el banco')) {
+        const deudaBanco = gpt_detec_response.match(/El usuario tiene deuda con el banco (\w+)/i);
+        if (deudaBanco) {
+          const deudaBancoValue = deudaBanco[1];
+          console.log("Deuda con el banco:", deudaBancoValue);
+        }
+      }
+
+      // Extracción de deuda con un servicio
+      if (gpt_detec_response.toLowerCase().includes('tiene deuda con un servicio')) {
+        const deudaServicio = gpt_detec_response.match(/El usuario tiene deuda con un servicio (\w+)/i);
+        if (deudaServicio) {
+          const deudaServicioValue = deudaServicio[1];
+          console.log("Deuda con un servicio:", deudaServicioValue);
+        }
+      }
+
+      // Extracción de edad
+      if (gpt_detec_response.toLowerCase().includes('edad')) {
+        const edad = gpt_detec_response.match(/La edad de la persona es (\d+)/i);
+        if (edad) {
+          const edadValue = parseInt(edad[1]);
+          console.log("La edad es:", edadValue);
+        }
+      }
+      
+  }catch (error) {
+    console.error('Error al detectar el genero:', error);
+    setMessages([...newMessages, { sender: 'Asistente IA', text: 'Lo siento, ha ocurrido un error. Por favor, intenta de nuevo.'
+    }]);
+  }
+
+
+    try {
+      const response = await axios.post('http://localhost:3001/api/chat', {
         username,
         messages: newMessages.map(msg => ({
           role: msg.sender === username ? 'user' : 'assistant',
@@ -140,7 +312,7 @@ export default function CuerpoChat() {
         onChange={(e) => setInputValue(e.target.value)}
       />
       <button
-        className="bg-vita-link text-white text-sm font-bold px-4 py-2 rounded-r-lg hover:bg-vita-link-dark"
+        className="bg-credi-check text-white text-sm font-bold px-4 py-2 rounded-r-lg hover:bg-credi-check-dark"
         onClick={() => sendMessage(inputValue)}
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
@@ -148,7 +320,7 @@ export default function CuerpoChat() {
         </svg>
       </button>
       <button
-        className="bg-vita-link text-white text-sm font-bold px-4 py-2 ml-2 rounded-lg hover:bg-vita-link-dark"
+        className="bg-credi-check text-white text-sm font-bold px-4 py-2 ml-2 rounded-lg hover:bg-credi-check-dark"
         onClick={startListening}
         disabled={isListening}
       >

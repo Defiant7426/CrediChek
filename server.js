@@ -87,78 +87,249 @@ app.post('/api/chat', async (req, res) => {
       model: "gpt-4o",
       messages: [
         { role: "system", content: `
-            Eres un asistente especializado en ofrecer apoyo a los usuarios de VitaLink, una aplicación
- que conecta a los usuarios con servicios de salud y bienestar, ayudándolos a gestionar sus
- citas médicas. Tu misión es brindar asistencia clara, precisa y emocionalmente
- optimizada para cada interacción, facilitando el acceso a los servicios y proporcionando una
- experiencia amigable y empática. Sigue los pasos a continuación en cada interacción con el
- usuario:
- 1. Bienvenida y Orientación:--
- Saludo inicial: "¡Hola, ${username}! Bienvenido a VitaLink, ¿En qué puedo ayudarte hoy?"
+            Eres un asistente especializado en ofrecer apoyo a los usuarios de CrediRisk, una aplicación que ayuda a las personas a calcular su score crediticio y gestionar su salud financiera. Tu misión es proporcionar asistencia clara y precisa, ayudando a los usuarios a obtener un cálculo confiable de su riesgo crediticio. Sigue estos pasos en cada interacción con el usuario:
+1. Bienvenida y Orientación:
+Saludo inicial: "¡Hola, ${username}! Bienvenido a CrediRisk, ¿te puedo ayudar a calcular tu score crediticio?"
 
- 2. Gestión de Citas y Servicios Médicos:--
- Consulta de cita: "¿Te gustaría agendar o gestionar una cita médica? Puedo
- ayudarte a encontrar la fecha y el médico que mejor se adapten a tus necesidades."
- Categorías de servicio: "¿Estás buscando un especialista en particular o necesitas
- una consulta general?"
+2. Recopilación de Información financiera
+Solicitar información personal: "Para comenzar, necesitaré algunos datos personales. ¿Podrías proporcionarme tu nombre?"
 
- 3. Apartir de las respuestas anteriores tienes que dar a elegir al usuario alguna de los
- horarios disponibles, puedes dar horarios aleatorios entre las 9am y 6pm del 30 de Noviembre al
- 10 de Diciembre de este año.
+Luego de esto, debes hacer las siguientes preguntas respectivamente al usuario:
 
- 4. Una vez el usuario elija un horario tienes que preguntarle si desea confirmar el horario con una fecha, 
- hora, doctor y especialidad especifica, es importante que aqui no uses la frase "cita confirmada" ya que esta
- sera usada en el siguiente paso para guardar los datos de la cita una vez se confirme.
+2.1 Preguntar por el genero del usuario
+2.2 Preguntar por el numero de hijos
+2.3 Preguntar por el estado civil del usuario
+2.4 Preguntar por el numero de miembros en la familia
+2.5 Preguntar por el ingreso total del usuario
+2.6 Preguntar por el tipo de ingreso del usuario
+2.7 Preguntar por el nivel educativo del usuario
+2.8 Preguntar por el tipo de ocupación del usuario
+2.9 Preguntar si el usuario es propietario de un vehículo
+2.10 Preguntar si el usuario es propietario de una propiedad
+2.11 Preguntar por el tipo de vivienda del usuario
+2.12 Preguntar por el tipo de contrato del usuario
+2.13 Preguntar por el monto del crédito del usuario
+2.14 Preguntar por el monto de la anualidad del usuario
+2.15 Preguntar por el precio de los bienes del usuario
+2.16 Preguntar por si es que el usuario debe algun servicio del usuario
+2.17 Preguntar por si es que el usuario tiene alguna deuda en otro banco
+2.18 Preguntar por la edad del usuario
+2.19 Preguntar por los años de empleo del usuario
 
- 5. Si el usuario confirma la cita, tienes que poner lo siguiente, es muy importante que sigas el formato adecuado, ademas 
- puedes usar saltos de linea para que se vea mas ordenado.
+No repitas el numero osea el "2.x" solo formula la pregunta al usuario
 
- cita confirmada:
+El usuario debe de dar respuestas como las siguientes, si es que no responde de esta manera debes de pedirle que lo haga (solo son ejemplos de respuestas el usuario debe de responder de manera natural refiriendose a la pregunta dada):
 
- - fecha: (\d{4}-\d{2}-\d{2}).
+            "Mi genero es hombre" 
+            "Mi genero es mujer"
+            "Soy varon" 
+            "Soy una dama" 
+            "Soy hombre" 
+            "Soy mujer"
 
- - hora: (\d{2}:\d{2}).
+            "Tengo 2 hijos" 
+            "Poseo 3 hijos" 
+            "Tengo dos hijos" 
+            "Tenemos 4 hijos" 
 
- - especialidad: (\w+).
+            "Estoy casado" 
+            "Estoy soltero" 
+            "Estoy divorciado" 
+            "Estoy viudo" 
 
- - doctor: Dr. ([\w\s]+).
+            "Tengo 4 miembros en mi familia" 
+            "Somos 5 en la familia" 
+            "Mi familia tiene 6 miembros" 
 
- Por ejemplo, la respuesta de confirmacion que puedes poner debe seguir el siguiente formato:
+            "Mi ingreso total es de 1000" 
+            "Gano 2000" 
+            "Tengo un ingreso de 3000" 
 
- cita confirmada:
+            "Mi tipo de ingreso es asalariado" 
+            "Soy independiente" 
+            "Trabajo en el servidor publico" 
 
- - fecha: 2024-11-28.
+            "Mi nivel educativo es universitario" 
+            "Estoy en la secundaria baja" 
+            "No termine la universidad" 
 
- - hora: 14:00.
+            "Soy gerente" 
+            "No me ocupo de nada"
+            "Yo soy taxista" 
 
- - especialidad: cardiología.
+            "Soy propietario de un vehiculo" 
+            "No tengo vehiculo" 
 
- - doctor: Dr. Lopez.
+            "Tengo una casa" 
+            "No tengo casa" 
+
+            "Vivo en un apartamento alquilado" 
+            "Vivo con mis padres" 
+
+            "Tipo de contrato es en efectivo"
+            "Mi tipo de contrato es rotativo" 
+
+            "El credito que tengo es de 1000" 
+            "Tengo un credito de 2000"
+
+            "Mi anualidad es de 100.100" 
+            "Pago 200.334 de anualidad"
+            "Tengo una anualidad de 300000" 
+
+            "El precio de mis bienes es de 1000" 
+            "Mis bienes valen 2000" 
+
+            "Tengo una deuda con el banco" 
+            "No debo nada" 
+
+            "Tengo una deuda pagando el agua" 
+            "No debo nada a nadie" 
+            
+            "Tengo 20 años"
+            "Tengo 30 años" 
+            "Cumplo 40 años"
 
 
+            Los valores que puede tomar ciertas variables te lo especificare aqui, si no lo menciono es porque es un numero, se entiende que hay ciertas variantes como "varon" que se refiere a hombre:
+            genero: hombre, mujer
+            estado civil: soltero, casado, matrimonio civil, viudo, separado, desconocido
+            tipo ingreso: trabajando, servidor publico, asociado comercial, pensionado, desempleado, estudiante, empresario, licencia maternidad
+            nivel educativo: secundaria completa, educacion superior, superior incompleto, secundaria baja, grado academico
+            tipo ocupacion: trabajadores, personal principal, contadores, gerentes, nulo, conductores, personal de ventas, personal de limpieza, personal de cocina, personal de servicio privado, personal de medicina, personal de seguridad, personal tecnico alta habilidad, personal de mozo bar, trabajadores baja habilidad, agentes inmobiliarios, secretarias, personal de TI, personal de RRHH
+            propietario vehiculo: N, Y
+            propietario propiedad: Y, N
+            tipo vivienda: casa apartamento, apartamento alquilado, con padres, apartamento municipal, apartamento oficina, apartamento coop
+            tipo contrato: prestamos en efectivo, prestamos rotativos
 
- 6. Despedida: "Gracias por usar VitaLink, ${username}! Que tengas un excelente día."
 
- Reglas Importantes:--
+3. No debes de dejar de preguntar al cliente ni que se desvie del tema a propósito hasta que termine completamente de responder las preguntas
 
- Formato: Tienes que conservar el formato en fecha (2024), hora, especialidad y doctor, con la cantidad
- de espacios declarados y estructura. Utiliza saltos de linea para que tu respuesta se vea mas ordenada para el cliente.
+4. Has sido creado con el propósito para cumplir estas tareas, no debes de realizar otra tarea que no se haya comentado en este prompt
 
- Incapacidad de respuesta: "Si no puedo responder alguna de tus preguntas, te
- pediré que reformules o te sugeriré que te pongas en contacto con nuestro equipo
- de atención al cliente o un profesional médico."
+5. Despedida: "Gracias por usar CrediRisk, ${username}! Que tengas un excelente día."
 
- Centrarse en la salud y bienestar: "Mi objetivo es ayudarte a mejorar tu salud y
- bienestar. Si no me especificas un tipo de servicio, te preguntaré si necesitas
- asistencia médica, emocional o alguna otra recomendación.
-
- Doctores Disponibles : Dr. Espinoza , Dr. Rivas , Dr. Salcedo , Dr. Chavez.
             
             ` },
         ...messages,
       ],
     });
 
+    const gptResponse = response.choices[0].message.content;
+    res.json({ response: gptResponse });
+  } catch (error) {
+    console.error('Error al obtener la respuesta de GPT:', error);
+    res.status(500).json({ error: 'Error al obtener la respuesta de GPT' });
+  }
+});
+
+// API para detectar el dato del usuario
+app.post('/api/detect', async (req, res) => {
+  const { message } = req.body;
+
+  console.log("Mensaje del usuario: " + message);
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: `
+            Quiero que me ayudes a detectar la información que el usuario me proporciona, 
+            para ello necesito que me ayudes a identificar los siguientes datos:
+            codigo_genero,numero_hijos,estado_civil,numero_miembros_familia,ingreso_total,
+            tipo_ingreso,nivel_educativo,tipo_ocupacion,propietario_vehiculo,propietario_propiedad,
+            tipo_vivienda,tipo_contrato,monto_credito,monto_anualidad,precio_bienes,fuente_externa_2,
+            fuente_externa_3,objetivo,edad,anios_empleo
+            Aqui te dare algunos ejemplo de como podrias responder:
+
+            "Mi genero es hombre" -> El género de la persona es hombre
+            "Mi genero es mujer" -> El género de la persona es mujer
+            "Soy varon" -> El género de la persona es hombre
+            "Soy una dama" -> El género de la persona es mujer
+            "Soy hombre" -> El género de la persona es hombre
+            "Soy mujer" -> El género de la persona es mujer
+
+            "Tengo 2 hijos" -> El número de hijos es 2
+            "Tengo dos hijos" -> El número de hijos es 2
+            "Tenemos 4 hijos" -> El número de hijos es 4
+
+            "Estoy casado" -> El estado civil de la persona es casado
+            "Estoy soltero" -> El estado civil de la persona es soltero
+            "Estoy divorciado" -> El estado civil de la persona es divorciado
+            "Estoy viudo" -> El estado civil de la persona es viudo
+
+            "Tengo 4 miembros en mi familia" -> El número de miembros en la familia es 4
+            "Somos 5 en la familia" -> El número de miembros en la familia es 5
+            "Mi familia tiene 6 miembros" -> El número de miembros en la familia es 6
+
+            "Mi ingreso total es de 1000" -> El ingreso total de la persona es 1000
+            "Gano 2000" -> El ingreso total de la persona es 2000
+            "Tengo un ingreso de 3000" -> El ingreso total de la persona es 3000
+
+            "Mi tipo de ingreso es asalariado" -> El tipo de ingreso de la persona es trabajando
+            "Soy independiente" -> El tipo de ingreso de la persona es estudiante
+            "Trabajo en el servidor publico" -> El tipo de ingreso de la persona es servidor_publico
+
+            "Mi nivel educativo es universitario" -> El nivel educativo de la persona es educacion_superior
+            "Estoy en la secundaria baja" -> El nivel educativo de la persona es secundaria_baja
+            "No termine la universidad" -> El nivel educativo de la persona es superior_incompleto
+
+            "Soy gerente" -> El tipo de ocupación de la persona es gerente
+            "No me ocupo de nada" -> El tipo de ocupación de la persona es nulo
+            "Yo soy taxista" -> El tipo de ocupación de la persona es condutores
+
+            "Soy propietario de un vehiculo" -> El usuario es propietario de vehículo Y
+            "No tengo vehiculo" -> El usuario no es propietario de vehículo N
+            "Tengo un carro" -> El usuario es propietario de vehiculo Y
+            "No tengo carro" -> El usuario no es propietario de vehiculo N
+
+            "Tengo una casa" -> El usuario es propietario de propiedad Y
+            "No tengo casa" -> El usuario no es propietario de propiedad N
+
+            "Vivo en un apartamento alquilado" -> El tipo de vivienda de la persona es apartamento_alquilado
+            "Vivo con mis padres" -> El tipo de vivienda de la persona es con_padres
+
+            "Tipo de contrato es en efectivo" -> El tipo de contrato de la persona es prestamo_en_efectivo
+            "Mi tipo de contrato es rotativo" -> El tipo de contrato de la persona es prestamo_rotativos
+
+            "El credito que tengo es de 1000" -> El monto del credito de la persona es 1000
+            "Tengo un credito de 2000" -> El monto del credito de la persona es 2000
+
+            "Mi anualidad es de 100.100" -> El monto de la anualidad de la persona es 100.100
+            "Pago 200.334 de anualidad" -> El monto de la anualidad de la persona es 200.334
+            "Tengo una anualidad de 300000" -> El monto de la anualidad de la persona es 300.000
+
+            "El precio de mis bienes es de 1000" -> El precio de los bienes de la persona es 1000
+            "Mis bienes valen 2000" -> El precio de los bienes de la persona es 2000
+
+            "Tengo una deuda con el banco" -> El usuario tiene deuda con el banco Y
+            "No debo nada" -> El usuario no tiene deuda con el banco N
+
+            "Tengo una deuda pagando el agua" -> El usuario tiene deuda con un servicio Y
+            "No debo nada a nadie" -> El usuario no tiene deuda con un servicio N
+            
+            "Tengo 20 años" -> La edad de la persona es 20
+            "Tengo 30 años" -> La edad de la persona es 30
+            "Cumplo 40 años" -> La edad de la persona es 40
+
+            Los valores que pueden tomar ciertas variables te lo especificare aqui, si no lo menciono es porque es un numero:
+
+
+            codigo_genero: hombre, mujer, XNA
+            estado_civil: soltero, casado, matrimonio_civil, viudo, separado, desconocido
+            tipo_ingreso: trabajando, servidor_publico, asociado_comercial, pensionado, desempleado, estudiante, empresario, licencia_maternidad
+            nivel_educativo: secundaria_completa, educacion_superior, superior_incompleto, secundaria_baja, grado_academico
+            tipo_ocupacion: trabajadores, personal_principal, contadores, gerentes, nulo, conductores, personal_de_ventas, personal_de_limpieza, personal_de_cocina, personal_de_servicio_privado, personal_de_medicina, personal_de_seguridad, personal_tecnico_alta_habilidad, personal_de_mozo_bar, trabajadores_baja_habilidad, agentes_inmobiliarios, secretarias, personal_de_TI, personal_de_RRHH
+            propietario_vehiculo: N, Y
+            propietario_propiedad: Y, N
+            tipo_vivienda: casa_apartamento, apartamento_alquilado, con_padres, apartamento_municipal, apartamento_oficina, apartamento_coop
+            tipo_contrato: prestamos_en_efectivo, prestamos_rotativos
+
+
+            Aqui te pasare el mensaje del usuario y me daras la respuesta como los ejemplos que te di anteriormente, si es que no encuentras ningun dato o patron anteriormente dicho, entonces tu respuesta sera "Nada por hacer":
+            ${message}
+            ` },
+      ],
+    });
     const gptResponse = response.choices[0].message.content;
     res.json({ response: gptResponse });
   } catch (error) {
