@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext";
+import { set } from 'react-datepicker/dist/date_utils';
 
 export default function CuerpoChat() {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -12,6 +13,9 @@ export default function CuerpoChat() {
   const [isListening, setIsListening] = useState(false);
   const { theme } = useContext(ThemeContext);
   const username = localStorage.getItem("username") || "Paciente";
+  const [userData, setUserData] = useState({});
+  const [consultaSQL, setConsultaSQL] = useState('');
+  const [resultadosSQL, setResultadosSQL] = useState([]);
   
 
   // Función para manejar la captura de voz
@@ -46,6 +50,8 @@ export default function CuerpoChat() {
     setMessages(newMessages);
     setInputValue('');
 
+    let gptResponse = '';
+
     try {
       const response_detection = await axios.post('http://localhost:3001/api/detect', { message });
       console.log("Respuesta de detección: ", response_detection.data.response);
@@ -56,6 +62,8 @@ export default function CuerpoChat() {
         const genero = gpt_detec_response.match(/El genero de la persona es (\w+)/);
         if (genero) {
           console.log("El genero es: ", genero[1]);
+          setUserData({ ...userData, codigo_genero: genero[1] });
+          console.log("userData: ", userData);
         }
       }
       // Extracción de número de hijos
@@ -64,6 +72,8 @@ export default function CuerpoChat() {
         if (hijos) {
           const numeroHijosValue = parseInt(hijos[1]);
           console.log("El número de hijos es:", numeroHijosValue);
+          setUserData({ ...userData, numero_hijos: numeroHijosValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -73,6 +83,8 @@ export default function CuerpoChat() {
         if (estadoCivil) {
           const estadoCivilValue = estadoCivil[1];
           console.log("El estado civil es:", estadoCivilValue);
+          setUserData({ ...userData, estado_civil: estadoCivilValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -82,6 +94,8 @@ export default function CuerpoChat() {
         if (miembrosFamilia) {
           const numeroMiembrosFamiliaValue = parseInt(miembrosFamilia[1]);
           console.log("El número de miembros en la familia es:", numeroMiembrosFamiliaValue);
+          setUserData({ ...userData, numero_miembros_familia: numeroMiembrosFamiliaValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -91,6 +105,8 @@ export default function CuerpoChat() {
         if (ingresoTotal) {
           const ingresoTotalValue = parseFloat(ingresoTotal[1]);
           console.log("El ingreso total es:", ingresoTotalValue);
+          setUserData({ ...userData, ingreso_total: ingresoTotalValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -100,6 +116,8 @@ export default function CuerpoChat() {
         if (tipoIngreso) {
           const tipoIngresoValue = tipoIngreso[1];
           console.log("El tipo de ingreso es:", tipoIngresoValue);
+          setUserData({ ...userData, tipo_ingreso: tipoIngresoValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -109,6 +127,8 @@ export default function CuerpoChat() {
         if (nivelEducativo) {
           const nivelEducativoValue = nivelEducativo[1];
           console.log("El nivel educativo es:", nivelEducativoValue);
+          setUserData({ ...userData, nivel_educativo: nivelEducativoValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -118,6 +138,8 @@ export default function CuerpoChat() {
         if (tipoOcupacion) {
           const tipoOcupacionValue = tipoOcupacion[1];
           console.log("El tipo de ocupación es:", tipoOcupacionValue);
+          setUserData({ ...userData, tipo_ocupacion: tipoOcupacionValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -127,6 +149,8 @@ export default function CuerpoChat() {
         if (propietarioVehiculo) {
           const propietarioVehiculoValue = propietarioVehiculo[1];
           console.log("Propietario de vehículo:", propietarioVehiculoValue);
+          setUserData({ ...userData, propietario_vehiculo: propietarioVehiculoValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -136,6 +160,8 @@ export default function CuerpoChat() {
         if (propietarioPropiedad) {
           const propietarioPropiedadValue = propietarioPropiedad[1];
           console.log("Propietario de propiedad:", propietarioPropiedadValue);
+          setUserData({ ...userData, propietario_propiedad: propietarioPropiedadValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -145,6 +171,8 @@ export default function CuerpoChat() {
         if (tipoVivienda) {
           const tipoViviendaValue = tipoVivienda[1];
           console.log("El tipo de vivienda es:", tipoViviendaValue);
+          setUserData({ ...userData, tipo_vivienda: tipoViviendaValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -154,6 +182,8 @@ export default function CuerpoChat() {
         if (tipoContrato) {
           const tipoContratoValue = tipoContrato[1];
           console.log("El tipo de contrato es:", tipoContratoValue);
+          setUserData({ ...userData, tipo_contrato: tipoContratoValue });
+          console.log("userData: ", userData);    
         }
       }
 
@@ -163,6 +193,8 @@ export default function CuerpoChat() {
         if (montoCredito) {
           const montoCreditoValue = parseFloat(montoCredito[1]);
           console.log("El monto del crédito es:", montoCreditoValue);
+          setUserData({ ...userData, monto_credito: montoCreditoValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -172,6 +204,8 @@ export default function CuerpoChat() {
         if (montoAnualidad) {
           const montoAnualidadValue = parseFloat(montoAnualidad[1]);
           console.log("El monto de la anualidad es:", montoAnualidadValue);
+          setUserData({ ...userData, monto_anualidad: montoAnualidadValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -181,6 +215,8 @@ export default function CuerpoChat() {
         if (precioBienes) {
           const precioBienesValue = parseFloat(precioBienes[1]);
           console.log("El precio de los bienes es:", precioBienesValue);
+          setUserData({ ...userData, precio_bienes: precioBienesValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -190,6 +226,8 @@ export default function CuerpoChat() {
         if (deudaBanco) {
           const deudaBancoValue = deudaBanco[1];
           console.log("Deuda con el banco:", deudaBancoValue);
+          setUserData({ ...userData, fuente_externa_2: deudaBancoValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -199,6 +237,8 @@ export default function CuerpoChat() {
         if (deudaServicio) {
           const deudaServicioValue = deudaServicio[1];
           console.log("Deuda con un servicio:", deudaServicioValue);
+          setUserData({ ...userData, fuente_externa_3: deudaServicioValue });
+          console.log("userData: ", userData);
         }
       }
 
@@ -208,7 +248,46 @@ export default function CuerpoChat() {
         if (edad) {
           const edadValue = parseInt(edad[1]);
           console.log("La edad es:", edadValue);
+          setUserData({ ...userData, edad: edadValue });
+          console.log("userData: ", userData);
         }
+      }
+
+      // Extracción de años de empleo
+      if (gpt_detec_response.toLowerCase().includes('años de empleo')) {
+        const añosEmpleo = gpt_detec_response.match(/La persona lleva (\d+) años en su empleo/i);
+        if (añosEmpleo) {
+          const añosEmpleoValue = parseInt(añosEmpleo[1]);
+          console.log("Años de empleo:", añosEmpleoValue);
+          setUserData({ ...userData,  anios_empleo: añosEmpleoValue });
+          console.log("userData: ", userData);
+        }
+      }
+
+      if (userData && Object.keys(userData).length > 0) {
+        try{
+          const fastApiResponse = await axios.post('http://localhost:8000/predict', userData);
+          const consultaSQL = fastApiResponse.data.consulta_sql;
+        
+          // Enviar consultaSQL al endpoint /api/consultasql
+          const respuestaSQL = await axios.post('http://localhost:3001/api/consultasql', { consulta_sql: consultaSQL });
+          setResultadosSQL(respuestaSQL.data.resultados);
+
+          console.log("Consulta SQL: ", consultaSQL);
+
+          console.log("Resultados SQL: ", respuestaSQL.data.resultados);
+
+          if(respuestaSQL.data.resultados[0].avg){
+
+            gptResponse = gptResponse + "Score " + respuestaSQL.data.resultados[0].avg + ". ";
+          }
+        }catch (error) {
+          console.error('Error al obtener la respuesta de FastAPI:', error);
+          setMessages([...newMessages, { sender: 'Asistente IA', text: 'Lo siento, ha ocurrido un error. Por favor, intenta de nuevo.' }]);
+
+        }
+        // Enviar userData al backend FastAPI para obtener consulta_sql
+        
       }
       
   }catch (error) {
@@ -227,7 +306,7 @@ export default function CuerpoChat() {
         }))
       });
 
-      const gptResponse = response.data.response;
+      gptResponse = gptResponse + response.data.response;
 
       
 

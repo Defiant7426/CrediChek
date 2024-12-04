@@ -189,6 +189,10 @@ El usuario debe de dar respuestas como las siguientes, si es que no responde de 
             "Tengo 30 años" 
             "Cumplo 40 años"
 
+            "Tengo 2 años de empleo" 
+            "Tengo 3 años de empleo" 
+            "Llevo 4 años trabajando"
+
 
             Los valores que puede tomar ciertas variables te lo especificare aqui, si no lo menciono es porque es un numero, se entiende que hay ciertas variantes como "varon" que se refiere a hombre:
             genero: hombre, mujer
@@ -310,6 +314,10 @@ app.post('/api/detect', async (req, res) => {
             "Tengo 20 años" -> La edad de la persona es 20
             "Tengo 30 años" -> La edad de la persona es 30
             "Cumplo 40 años" -> La edad de la persona es 40
+            
+            "Tengo 2 años de empleo" -> La persona lleva 2 años en su empleo
+            "Tengo 3 años de empleo" -> La persona lleva 3 años en su empleo
+            "Llevo 4 años trabajando" -> La persona lleva 4 años en su empleo
 
             Los valores que pueden tomar ciertas variables te lo especificare aqui, si no lo menciono es porque es un numero:
 
@@ -337,6 +345,31 @@ app.post('/api/detect', async (req, res) => {
     res.status(500).json({ error: 'Error al obtener la respuesta de GPT' });
   }
 });
+
+
+app.post('/api/consultasql', async (req, res) => {
+  const { consulta_sql } = req.body;
+
+  // if (!consulta_sql) {
+  //   return res.status(400).json({ error: 'No se proporcionó ninguna consulta SQL.' });
+  // }
+
+  try {
+    // Ejecutar la consulta SQL
+    const result = await query(consulta_sql);
+    // const result = await query("SELECT AVG(objetivo) FROM usuario WHERE  codigo_genero=hombre  AND  0.5<numero_hijos AND numero_hijos<99999999 ;");
+    //const result = await query("SELECT AVG(objetivo) FROM application_data WHERE  codigo_genero='hombre'  AND  0.5<numero_hijos AND numero_hijos<99999999 ;");
+
+    
+    console.log("Resultado", result.rows);
+    // Devolver los resultados como JSON
+    res.json({ resultados: result.rows });
+  } catch (err) {
+    console.error('Error al ejecutar la consulta SQL:', err.message);
+    res.status(500).json({ error: 'No se pudo ejecutar la consulta SQL.' });
+  }
+});
+
 
 
 app.post('/api/citas', async (req, res) => {
