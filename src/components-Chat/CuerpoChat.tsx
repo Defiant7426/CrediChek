@@ -16,6 +16,36 @@ export default function CuerpoChat() {
   const [userData, setUserData] = useState({});
   const [consultaSQL, setConsultaSQL] = useState('');
   const [resultadosSQL, setResultadosSQL] = useState([]);
+
+  useEffect(() => {
+    if (userData && Object.keys(userData).length > 0) {
+      (async () => {
+        try {
+          const fastApiResponse = await axios.post('http://localhost:8000/predict', userData);
+          const consultaSQL = fastApiResponse.data.consulta_sql;
+  
+          // Enviar consultaSQL al endpoint /api/consultasql
+          const respuestaSQL = await axios.post('http://localhost:3001/api/consultasql', { consulta_sql: consultaSQL });
+          setResultadosSQL(respuestaSQL.data.resultados);
+  
+          console.log("Consulta SQL: ", consultaSQL);
+          console.log("Resultados SQL: ", respuestaSQL.data.resultados);
+  
+          if (respuestaSQL.data.resultados[0].avg) {
+            const gptResponse = "Score " + respuestaSQL.data.resultados[0].avg + ". ";
+            // Actualiza los mensajes con la respuesta
+            setMessages(prevMessages => [...prevMessages, { sender: 'Asistente IA', text: gptResponse }]);
+          }
+        } catch (error) {
+          console.error('Error al obtener la respuesta de FastAPI:', error);
+          setMessages(prevMessages => [
+            ...prevMessages,
+            { sender: 'Asistente IA', text: 'Lo siento, ha ocurrido un error. Por favor, intenta de nuevo.' },
+          ]);
+        }
+      })();
+    }
+  }, [userData]);
   
 
   // Función para manejar la captura de voz
@@ -264,31 +294,31 @@ export default function CuerpoChat() {
         }
       }
 
-      if (userData && Object.keys(userData).length > 0) {
-        try{
-          const fastApiResponse = await axios.post('http://localhost:8000/predict', userData);
-          const consultaSQL = fastApiResponse.data.consulta_sql;
+      // if (userData && Object.keys(userData).length > 0) {
+      //   try{
+      //     const fastApiResponse = await axios.post('http://localhost:8000/predict', userData);
+      //     const consultaSQL = fastApiResponse.data.consulta_sql;
         
-          // Enviar consultaSQL al endpoint /api/consultasql
-          const respuestaSQL = await axios.post('http://localhost:3001/api/consultasql', { consulta_sql: consultaSQL });
-          setResultadosSQL(respuestaSQL.data.resultados);
+      //     // Enviar consultaSQL al endpoint /api/consultasql
+      //     const respuestaSQL = await axios.post('http://localhost:3001/api/consultasql', { consulta_sql: consultaSQL });
+      //     setResultadosSQL(respuestaSQL.data.resultados);
 
-          console.log("Consulta SQL: ", consultaSQL);
+      //     console.log("Consulta SQL: ", consultaSQL);
 
-          console.log("Resultados SQL: ", respuestaSQL.data.resultados);
+      //     console.log("Resultados SQL: ", respuestaSQL.data.resultados);
 
-          if(respuestaSQL.data.resultados[0].avg){
+      //     if(respuestaSQL.data.resultados[0].avg){
 
-            gptResponse = gptResponse + "Score " + respuestaSQL.data.resultados[0].avg + ". ";
-          }
-        }catch (error) {
-          console.error('Error al obtener la respuesta de FastAPI:', error);
-          setMessages([...newMessages, { sender: 'Asistente IA', text: 'Lo siento, ha ocurrido un error. Por favor, intenta de nuevo.' }]);
+      //       gptResponse = "Score " + respuestaSQL.data.resultados[0].avg + ". ";
+      //     }
+      //   }catch (error) {
+      //     console.error('Error al obtener la respuesta de FastAPI:', error);
+      //     setMessages([...newMessages, { sender: 'Asistente IA', text: 'Lo siento, ha ocurrido un error. Por favor, intenta de nuevo.' }]);
 
-        }
-        // Enviar userData al backend FastAPI para obtener consulta_sql
+      //   }
+      //   // Enviar userData al backend FastAPI para obtener consulta_sql
         
-      }
+      // }
       
   }catch (error) {
     console.error('Error al detectar el genero:', error);
@@ -318,7 +348,8 @@ export default function CuerpoChat() {
       }
 
       // Mostrar respuesta de GPT y reproducirla
-      setMessages([...newMessages, { sender: 'Asistente IA', text: gptResponse }]);
+      //setMessages([...newMessages, { sender: 'Asistente IA', text: gptResponse }]);
+      setMessages(prevMessages => [...prevMessages, { sender: 'Asistente IA', text: gptResponse }]);
       speakText(gptResponse);  // Reproducir la respuesta del asistente
 
     } catch (error) {
